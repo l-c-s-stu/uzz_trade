@@ -12,4 +12,4 @@ class CommentListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         goods_id = self.kwargs['goods_id']
-        serializer.save(user=self.request.user, goods_id=goods_id)  # ✅ 自动关联商品
+        serializer.save(user=self.request.user, goods_id=goods_id)
