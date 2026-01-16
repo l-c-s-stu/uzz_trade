@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/goods/',include('goods.urls')),
     path('api/', include('comments.urls')),
     path('api/', include('wishes.urls')),
+    path('api/', include('trade.urls')),
 ]
 
 # 配置媒体文件URL（仅在开发环境中）

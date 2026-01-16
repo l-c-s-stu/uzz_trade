@@ -146,3 +146,16 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+# 缓存配置
+# 开发环境使用内存缓存，生产环境可切换到 Redis
+# Redis 配置示例（需要 Redis 服务运行）:
+# 'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+# 'LOCATION': 'redis://127.0.0.1:6379/1',
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'KEY_PREFIX': 'campus_trade',
+        'TIMEOUT': 60,  # 默认缓存时间60秒
+    }
+}

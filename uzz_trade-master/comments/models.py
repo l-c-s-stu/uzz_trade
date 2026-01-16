@@ -1,8 +1,6 @@
 from django.db import models
 from django.conf import settings
 from goods.models import Goods
-from goods.views import GoodsListCreateView
-
 
 # Create your models here.
 class Comment(models.Model):

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园二手交易平台 - 样式预览</title>
+    <!-- 引入 Google Fonts 提升字体质感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           把之前的 CSS 全部粘贴在这里
+           ========================================= */
+        :root {
+            --primary-color: #4F46E5;       /* 活力靛蓝 */
+            --primary-hover: #4338ca;
+            --text-main: #1F2937;
+            --text-secondary: #6B7280;
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --danger: #EF4444;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.2s; }
+        ul { list-style: none; }
+
+        /* 布局容器 */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* 导航栏 */
+        .navbar {
+            background: var(--bg-card);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); letter-spacing: -0.5px; }
+        .nav-links a { margin-left: 2rem; font-weight: 500; color: var(--text-secondary); }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-color); }
+
+        /* 按钮 */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-outline { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); }
+        .btn-block { width: 100%; }
+
+        /* 输入框 */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+        /* 商品列表 */
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            padding-bottom: 40px;
+        }
+        .goods-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .goods-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .goods-img-wrapper { width: 100%; height: 200px; overflow: hidden; background: #f3f4f6; position: relative;}
+        .goods-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .goods-card:hover .goods-img { transform: scale(1.05); }
+        .goods-info { padding: 16px; }
+        .goods-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .goods-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .goods-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f3f4f6; }
+        .goods-price { color: var(--danger); font-size: 1.25rem; font-weight: 700; }
+        .goods-price::before { content: '¥'; font-size: 0.8rem; margin-right: 2px; }
+        .goods-category { font-size: 0.75rem; color: var(--primary-color); background: #EEF2FF; padding: 4px 8px; border-radius: 4px; font-weight: 500; }
+
+        /* 登录演示区域 */
+        .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; color: var(--text-main); border-left: 5px solid var(--primary-color); padding-left: 15px; }
+        .demo-section { margin-bottom: 60px; }
+        
+        .auth-demo-wrapper { display: flex; justify-content: center; background: #E0E7FF; padding: 40px; border-radius: var(--radius-md); }
+        .auth-card { background: white; padding: 40px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); width: 100%; max-width: 380px; }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-title { font-size: 1.5rem; color: var(--text-main); font-weight: 700; }
+        .auth-subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">CampusTrade 🛒</div>
+            <div class="nav-links">
+                <a href="#" class="active">首页</a>
+                <a href="#">闲置分类</a>
+                <a href="#">发布闲置</a>
+                <a href="#" class="btn btn-primary" style="color: white; margin-left: 20px;">登录 / 注册</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- 演示1：商品列表 -->
+        <div class="demo-section">
+            <h2 class="section-title">最新闲置 (Card UI)</h2>
+            <div class="goods-grid">
+                <!-- 商品卡片 1 -->
+                <div class="goods-card">
+                    <div class="goods-img-wrapper">
+                        <!-- 使用 picsum 随机图 -->
+                        <img src="https://picsum.photos/400/300?random=1" alt="商品图" class="goods-img">
+                    </div>
+                    <div class="goods-info">
+                        <h3 class="goods-title">99新 MacBook Pro M1 16G</h3>
+                        <p class="goods-desc">毕业出闲置，女生自用，电池健康98%，带原装充电器和包装盒，仅支持校内面交。</p>
+                        <div class="goods-meta">
+                            <span class="goods-price">6500</span>
+                            <span class="goods-category">数码产品</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品卡片 2 -->
+                <div class="goods-card">
+                    <div class="goods-img-wrapper">
+                        <img src="https://picsum.photos/400/300?random=2" alt="商品图" class="goods-img">
+                    </div>
+                    <div class="goods-info">
+                        <h3 class="goods-title">考研数学张宇全套资料</h3>
+                        <p class="goods-desc">2025最新版，基本全新，只有前几页有笔记。附赠草稿纸一沓。</p>
+                        <div class="goods-meta">
+                            <span class="goods-price">45</span>
+                            <span class="goods-category">图书教材</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品卡片 3 -->
+                <div class="goods-card">
+                    <div class="goods-img-wrapper">
+                        <img src="https://picsum.photos/400/300?random=3" alt="商品图" class="goods-img">
+                    </div>
+                    <div class="goods-info">
+                        <h3 class="goods-title">捷安特山地车 ATX777</h3>
+                        <p class="goods-desc">骑了一年，换了公路车所以出。刹车灵敏，变速顺滑，送一把U型锁。</p>
+                        <div class="goods-meta">
+                            <span class="goods-price">800</span>
+                            <span class="goods-category">运动器材</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品卡片 4 -->
+                <div class="goods-card">
+                    <div class="goods-img-wrapper">
+                        <img src="https://picsum.photos/400/300?random=4" alt="商品图" class="goods-img">
+                    </div>
+                    <div class="goods-info">
+                        <h3 class="goods-title">宜家特里台灯 (含灯泡)</h3>
+                        <p class="goods-desc">搬宿舍带不走了，便宜出。灯光柔和不刺眼，适合晚上赶DDL。</p>
+                        <div class="goods-meta">
+                            <span class="goods-price">30</span>
+                            <span class="goods-category">生活用品</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 演示2：登录注册样式 -->
+        <div class="demo-section">
+            <h2 class="section-title">登录/注册演示</h2>
+            <div class="auth-demo-wrapper">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h3 class="auth-title">欢迎回来</h3>
+                        <p class="auth-subtitle">登录你的校园账号</p>
+                    </div>
+                    <form>
+                        <input type="text" class="form-input" placeholder="请输入学号/手机号">
+                        <input type="password" class="form-input" placeholder="请输入密码">
+                        <button type="button" class="btn btn-primary btn-block">立即登录</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+                        还没有账号？ <a href="#" style="color: var(--primary-color); font-weight: 600;">去注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

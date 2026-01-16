@@ -1,7 +1,7 @@
 // API工具类
 class ApiClient {
     constructor() {
-        this.baseURL = 'http://127.0.0.1:8000/api';
+        this.baseURL = 'http://150.158.90.164:8000/api';
     }
 
     // 获取认证头（仅包含鉴权，不默认附加 Content-Type）
