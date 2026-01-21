@@ -169,27 +169,12 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-/* 使用样式预览中的 CSS 变量和样式 */
-:root {
-  --primary-color: #4F46E5;
-  --primary-hover: #4338ca;
-  --text-main: #1F2937;
-  --text-secondary: #6B7280;
-  --bg-body: #F3F4F6;
-  --bg-card: #FFFFFF;
-  --danger: #EF4444;
-  --success: #10B981;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
+/* iOS 风格样式 - 使用全局 iOS 变量 */
 
 .login-page {
   min-height: 100vh;
-  background-color: var(--bg-body);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--ios-bg-primary);
+  font-family: var(--ios-font-family);
 }
 
 /* 布局容器 */
@@ -199,15 +184,18 @@ const handleLogin = async () => {
   padding: 0 20px;
 }
 
-/* 导航栏 */
+/* 导航栏 - iOS 风格 */
 .navbar {
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--ios-separator);
   position: sticky;
   top: 0;
-  z-index: 100;
-  padding: 1rem 0;
-  margin-bottom: 2rem;
+  z-index: 1000;
+  padding: var(--ios-spacing-md) 0;
+  margin-bottom: var(--ios-spacing-lg);
+  box-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .nav-content {
@@ -217,10 +205,11 @@ const handleLogin = async () => {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  letter-spacing: -0.5px;
+  font-size: var(--ios-font-size-headline);
+  font-weight: 700;
+  color: var(--ios-blue);
+  letter-spacing: -0.3px;
+  text-decoration: none;
 }
 
 .nav-links {
@@ -229,49 +218,61 @@ const handleLogin = async () => {
 }
 
 .nav-link {
-  margin-left: 2rem;
+  margin-left: var(--ios-spacing-lg);
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--ios-text-secondary);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--ios-transition-fast);
 }
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  color: var(--primary-color);
+  color: var(--ios-blue);
 }
 
-/* 按钮 */
+/* 按钮 - iOS 风格 */
 .btn {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-family: var(--ios-font-family);
+  font-size: var(--ios-font-size-body);
   font-weight: 600;
-  cursor: pointer;
+  line-height: 1.47059;
   border: none;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
+  border-radius: var(--ios-radius-md);
+  cursor: pointer;
+  transition: all var(--ios-transition-fast);
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--ios-blue);
+  color: #FFFFFF;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  background-color: var(--ios-blue-dark);
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: var(--ios-blue-dark);
+  opacity: 0.8;
+  transform: scale(0.97);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  opacity: 0.4;
   cursor: not-allowed;
+  background-color: var(--ios-blue);
 }
 
 .btn-block {
   width: 100%;
+  display: flex;
 }
 
 /* 认证卡片 */
@@ -283,10 +284,11 @@ const handleLogin = async () => {
 }
 
 .auth-card {
-  background: white;
-  padding: 40px;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  background-color: var(--ios-bg-secondary);
+  padding: var(--ios-spacing-xl);
+  border-radius: var(--ios-radius-lg);
+  box-shadow: var(--ios-shadow-md);
+  border: 0.5px solid var(--ios-separator);
   width: 100%;
   max-width: 420px;
 }
@@ -297,15 +299,15 @@ const handleLogin = async () => {
 }
 
 .auth-title {
-  font-size: 1.5rem;
-  color: var(--text-main);
+  font-size: var(--ios-font-size-headline);
+  color: var(--ios-text-primary);
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: var(--ios-spacing-xs);
 }
 
 .auth-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  color: var(--ios-text-secondary);
+  font-size: var(--ios-font-size-subhead);
 }
 
 /* 输入框 */
@@ -328,29 +330,30 @@ const handleLogin = async () => {
 }
 
 .form-input:disabled {
-  background-color: #F3F4F6;
+  background-color: var(--ios-bg-tertiary);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* 错误和成功消息 */
 .error-message {
-  background-color: #FEE2E2;
-  color: var(--danger);
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  border-left: 3px solid var(--danger);
+  background-color: rgba(255, 59, 48, 0.1);
+  color: var(--ios-red);
+  padding: 12px 16px;
+  border-radius: var(--ios-radius-md);
+  margin-bottom: var(--ios-spacing-md);
+  font-size: var(--ios-font-size-body);
+  border-left: 3px solid var(--ios-red);
 }
 
 .success-message {
-  background-color: #D1FAE5;
-  color: var(--success);
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius-sm);
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  border-left: 3px solid var(--success);
+  background-color: rgba(52, 199, 89, 0.1);
+  color: var(--ios-green);
+  padding: 12px 16px;
+  border-radius: var(--ios-radius-md);
+  margin-bottom: var(--ios-spacing-md);
+  font-size: var(--ios-font-size-body);
+  border-left: 3px solid var(--ios-green);
 }
 
 /* 底部链接 */
@@ -390,4 +393,6 @@ const handleLogin = async () => {
   }
 }
 </style>
+
+
 

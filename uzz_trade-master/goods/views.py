@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, filters
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 # 缓存功能已集成到视图方法中，无需额外导入
 
 from .models import Goods, Category, GoodsImage
 from .serializers import GoodsSerializer, CategorySerializer, GoodsImageSerializer
+from .filters import GoodsFilter
 
 # 自定义权限类：只有商品发布者或管理员可以删除
 class IsOwnerOrAdmin(permissions.BasePermission):
@@ -23,6 +25,11 @@ class GoodsListCreateView(generics.ListCreateAPIView):
     queryset = Goods.objects.all().order_by('-created_at')
     serializer_class = GoodsSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = GoodsFilter
+    search_fields = ['title', 'description']
+    ordering_fields = ['created_at', 'price']
+    ordering = ['-created_at']
 
     def list(self, request, *args, **kwargs):
         """列表查询（已缓存）"""

@@ -13,13 +13,15 @@ class OrderSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
     pay_status_display = serializers.CharField(source='get_pay_status_display', read_only=True)
     goods_id = serializers.IntegerField(write_only=True, required=True)
+    order_mount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, allow_null=True)
     
     class Meta:
         model = Order
         fields = ['id', 'user', 'user_name', 'goods', 'goods_id', 'goods_title', 
                  'goods_image', 'goods_price', 'order_sn', 'trade_no', 'pay_status', 
                  'pay_status_display', 'post_script', 'order_mount', 'pay_time', 'add_time']
-        read_only_fields = ['order_sn', 'trade_no', 'pay_time', 'add_time', 'user']
+        read_only_fields = ['order_sn', 'trade_no', 'pay_time', 'add_time', 'user', 'goods']
+        # order_mount 不在 read_only_fields 中，因为需要在 validate 方法中设置
     
     def validate_goods_id(self, value):
         """验证商品是否存在且可购买"""
@@ -54,6 +56,17 @@ class OrderSerializer(serializers.ModelSerializer):
         if goods.status != 1:
             raise serializers.ValidationError(f"商品状态为{goods.get_status_display()}，无法购买")
         
+        # 检查该商品是否已有待支付的订单（防止重复购买）
+        existing_order = Order.objects.filter(
+            goods=goods,
+            pay_status='WAIT'  # 待支付状态
+        ).first()
+        
+        if existing_order:
+            raise serializers.ValidationError(
+                f"该商品已有待支付的订单（订单号：{existing_order.order_sn}），请先支付或取消该订单后再购买"
+            )
+        
         # 创建订单
         order = Order.objects.create(
             user=self.context['request'].user,
@@ -63,10 +76,11 @@ class OrderSerializer(serializers.ModelSerializer):
             pay_status='WAIT'
         )
         
-        # 注意：因为是二手孤品，暂时不修改商品状态
-        # 可以在支付成功后或确认交易时再修改状态
-        # goods.status = 2  # 标记为"交易中"或"已出"
-        # goods.save()
+        # 注意：创建订单时不修改商品状态，保持"在售"状态
+        # 只有在支付成功后才将商品状态改为"已出"
+        # 这样可以防止用户创建多个订单而不支付
         
         return order
+
+
 

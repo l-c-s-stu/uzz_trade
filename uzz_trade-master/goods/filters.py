@@ -10,8 +10,11 @@ class GoodsFilter(django_filters.FilterSet):
     min_price = django_filters.NumberFilter(field_name='price', lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name='price', lookup_expr='lte')
     title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
+    owner = django_filters.NumberFilter(field_name='owner__id', lookup_expr='exact')
     
     class Meta:
         model = Goods
-        fields = ['category', 'category_code', 'status', 'min_price', 'max_price', 'title']
+        fields = ['category', 'category_code', 'status', 'min_price', 'max_price', 'title', 'owner']
+
+
 

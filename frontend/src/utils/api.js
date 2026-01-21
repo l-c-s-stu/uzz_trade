@@ -84,6 +84,11 @@ export const authAPI = {
     return apiClient.post('/users/token/refresh/', { refresh })
   },
 
+  // 获取当前用户信息
+  getProfile: () => {
+    return apiClient.get('/users/profile/')
+  },
+
   // 检查是否登录
   isLoggedIn: () => {
     return !!localStorage.getItem('access')
@@ -100,8 +105,15 @@ export const authAPI = {
 // 商品相关
 export const goodsAPI = {
   // 获取商品列表
-  getGoods: () => {
-    return apiClient.get('/goods/')
+  getGoods: (params = {}) => {
+    return apiClient.get('/goods/', { params })
+  },
+  
+  // 获取我的商品列表
+  getMyGoods: (params = {}) => {
+    // 通过owner参数过滤当前用户的商品
+    // 需要先获取当前用户ID，这里暂时通过后端返回的数据过滤
+    return apiClient.get('/goods/', { params })
   },
 
   // 获取商品详情
@@ -153,6 +165,11 @@ export const commentsAPI = {
 
 // 想买相关
 export const wishesAPI = {
+  // 获取想买列表
+  getWishList: () => {
+    return apiClient.get('/wishes/')
+  },
+
   // 添加想买
   addToWish: (goodsId) => {
     return apiClient.post(`/goods/${goodsId}/wish/`)
@@ -192,5 +209,40 @@ export const ordersAPI = {
   }
 }
 
+// 管理后台相关
+export const adminAPI = {
+  // 获取统计数据
+  getStats: () => {
+    return apiClient.get('/admin/stats/')
+  },
+
+  // 获取用户列表
+  getUsers: (params = {}) => {
+    return apiClient.get('/admin/users/', { params })
+  },
+
+  // 更新用户状态
+  updateUserStatus: (userId, isActive) => {
+    return apiClient.patch(`/admin/users/${userId}/`, { is_active: isActive })
+  },
+
+  // 获取商品列表（管理员）
+  getGoods: (params = {}) => {
+    return apiClient.get('/admin/goods/', { params })
+  },
+
+  // 更新商品状态
+  updateGoodStatus: (goodsId, status) => {
+    return apiClient.patch(`/admin/goods/${goodsId}/`, { status })
+  },
+
+  // 删除商品（管理员）
+  deleteGood: (goodsId) => {
+    return apiClient.delete(`/admin/goods/${goodsId}/`)
+  }
+}
+
 export default apiClient
+
+
 

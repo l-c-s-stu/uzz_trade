@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'trade',
     'comments',
     'wishes',
+    'admin_backend',
     'corsheaders'
 ]
 

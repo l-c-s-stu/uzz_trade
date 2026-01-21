@@ -32,3 +32,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """用户信息序列化器（用于获取当前用户信息）"""
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'phone', 'student_id', 'college', 'avatar', 
+                 'date_joined', 'is_staff', 'is_superuser', 'is_active')
+        read_only_fields = ('id', 'username', 'date_joined', 'is_staff', 'is_superuser', 'is_active')

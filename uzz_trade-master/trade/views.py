@@ -45,6 +45,24 @@ class OrderViewSet(mixins.CreateModelMixin,
                 'message': f'订单状态为{order.get_pay_status_display()}，无法支付'
             }, status=status.HTTP_400_BAD_REQUEST)
         
+        # 检查商品状态，确保商品仍然"在售"
+        goods = order.goods
+        if goods.status != 1:
+            return Response({
+                'message': f'商品状态为{goods.get_status_display()}，无法支付'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 检查该商品是否已有其他已支付的订单
+        paid_orders = Order.objects.filter(
+            goods=goods,
+            pay_status='SUCCESS'
+        ).exclude(id=order.id)
+        
+        if paid_orders.exists():
+            return Response({
+                'message': '该商品已被其他订单购买，无法支付'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         # 模拟支付：生成交易流水号
         trade_no = f"TRADE{int(timezone.now().timestamp())}{order.id}"
         
@@ -55,9 +73,14 @@ class OrderViewSet(mixins.CreateModelMixin,
             order.save()
             
             # 支付成功后，将商品状态改为"已出"
-            goods = order.goods
             goods.status = 2  # 已出
             goods.save()
+            
+            # 取消该商品的所有其他待支付订单（因为商品已售出）
+            Order.objects.filter(
+                goods=goods,
+                pay_status='WAIT'
+            ).exclude(id=order.id).update(pay_status='CANCEL')
         
         serializer = self.get_serializer(order)
         return Response({
@@ -80,8 +103,22 @@ class OrderViewSet(mixins.CreateModelMixin,
                 'message': '订单已取消'
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        order.pay_status = 'CANCEL'
-        order.save()
+        with transaction.atomic():
+            order.pay_status = 'CANCEL'
+            order.save()
+            
+            # 取消订单后，检查该商品是否还有其他待支付的订单
+            # 如果没有，确保商品状态为"在售"（如果之前被错误修改了）
+            goods = order.goods
+            has_pending_orders = Order.objects.filter(
+                goods=goods,
+                pay_status='WAIT'
+            ).exclude(id=order.id).exists()
+            
+            # 如果没有其他待支付订单，且商品状态不是"在售"，恢复为"在售"
+            if not has_pending_orders and goods.status != 1:
+                goods.status = 1  # 恢复为"在售"
+                goods.save()
         
         serializer = self.get_serializer(order)
         return Response({
